@@ -1,0 +1,22 @@
+
+4.2.5 TIMER
+~~~~~~~~~~~
+
+   定时器主要有计数和定时功能，定时器在STM32上的原理以及使用，推荐\ `博客 <https://blog.csdn.net/whw8007/article/details/8973085>`__
+
+   • ``TIM Index``：设置选用对应的TIM，可选序号见TIM引脚映射图;
+   • ``Timing``：定时器定时时间设置，单位为ms；
+   • ``PinRemap``：引脚重映射索引，参考引脚映射图；
+   • ``Sample Time``：采样时间，推荐与系统步长一致。
+
+   .. image:: media/image77.png
+      :align: center
+      :scale: 70 %
+
+   其中，4 个通用定时器的复用功能重映射情况如表格所示：
+
+   .. image:: media/image78.png
+      :align: center
+      :scale: 70 %
+
+.. note::TIM 模块其他功能的实现根据实际情况配置，整个流程与上述类似。

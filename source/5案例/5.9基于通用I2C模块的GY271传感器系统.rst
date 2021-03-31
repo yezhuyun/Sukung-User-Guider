@@ -1,0 +1,71 @@
+
+5.5基于通用I2C 模块的GY271 传感器系统 
+----------------------------------------
+
+   通过使用I2C读写模块，在Simulink上读取GY271的三轴数据
+
+.. _步骤1硬件连接-1:
+
+步骤1：硬件连接
+~~~~~~~~~~~~~~~
+
+   GY271由I2C驱动，我们设计使用I2C1，并且使能引脚重映射，因此，SCL连接PB8，SDA连接PB9，如下图所示。
+
+   .. image:: media/image135.jpeg
+      :align: center
+      :scale: 55 %
+
+步骤2：工程搭建
+~~~~~~~~~~~~~~~
+
+   我们新建一个程序，参考GY271的本地驱动，我们搭建如下程序。
+
+   .. image:: media/image136.png
+      :align: center
+      :scale: 55 %
+
+   - 初始化与模式配置
+
+      .. code-block:: C++
+
+         I2C_WriteRegisterByte(I2C1, 0x3C, 0x00,0x70);//8位的采样平均，15Hz的标准数据输出频率
+
+         I2C_WriteRegisterByte(I2C1, 0x3C, 0x02, 0x00);//连续测量模式
+
+      根据I2C单次写模块，做出如下图设置。
+
+      .. image:: media/image137.png
+         :align: center
+         :scale: 55 %
+
+      .. image:: media/image138.png
+         :align: center
+         :scale: 55 %
+
+步骤3：获取数据
+~~~~~~~~~~~~~~~
+
+   .. code-block:: C++
+      
+      I2C_WriteByte(I2C1, 0x3C, 0x03);
+
+      I2C_ReadBytes(I2C1, 0x3D, GY271_BUF, 6);
+
+   我们分别使用I2C循环写和读模块去实现，上述代码。
+
+   .. image:: media/image139.png
+      :align: center
+      :scale: 55 %
+
+   .. image:: media/image140.png
+      :align: center
+      :scale: 55 %
+
+步骤4：结果
+~~~~~~~~~~~
+
+   通过上述设置，搭建程序，编译、下载、运行，得到GY271三轴数据，如图。
+
+   .. image:: media/image141.png
+      :align: center
+      :scale: 55 %

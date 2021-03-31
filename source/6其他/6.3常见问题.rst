@@ -1,0 +1,105 @@
+.. _FAQ:
+
+6.2 常见问题 
+------------
+
+6.2.1 安装
+~~~~~~~~~~
+
+   Sukung的安装以及环境配置，参照<安装流程>。在安装与配置说明中，已经提到相关错误以及其对应的解决方法。在此，对其进行补充。
+
+   -  **问题1**：在安装Sukung时，或者在工程编译阶段，会在命令行窗口，或者在 ``diagnostics viewer`` 出现如下图错误，``缺少依赖共享库`` 。
+
+      .. image:: media/image258.png
+         :align: center
+         :scale: 55 %
+
+      或者，直接提醒缺失 ``ucrtbased.dll`` 和 ``vcruntime140d.dll`` 等 ``dll`` 文件。
+
+      .. image:: media/image259.png
+         :align: center
+         :scale: 55 %
+
+      **解决方法** ：可直接从其它PC或者<链接>获取缺失文件，粘贴到对应文件夹内，一般位于 ``C:\Windows\System32`` 。
+
+6.2.2 下载与连接
+~~~~~~~~~~~~~~~~
+
+   此Sukung版本使用的是基于ISP的软件下载方式，相关注意事项，已在<链接>中给出。在此做出对与目标机连接时相关问题的补充，并给出相关分析。
+
+   -  **问题2：** 点击 ``Connect To Target`` 实现连接目标机操作时，立即弹出如下图错误信息：``Error occurred while executing External Mode MEX-file `ext_sukung_serial_comm`…`` 。
+
+      .. image:: media/image260.png
+         :align: center
+         :scale: 55 %
+
+      **解决方法：**
+
+         - 1) 若立即弹出，则说明PC未与目标机建立连接，串口通讯或 ``interface`` 设置出现问题，检查相关COM与硬件连接
+
+         - 2) 若稍等片刻(10s)才弹出此错误信息，则说明目标机未及时响应，则可能目标机未处于初始化运行状态，可以复位目标机，重新连接。或者，Simulink程序中使用了I2C或SPI等在初始化操作时，需要和外部设备进行交互的通讯方式，外部设备供电或者连接线问题导致目标机初始化失败，无法进入等待PC连接的阶段。
+
+         - 3) 若由于在运行时，直接由目标机关闭与PC的连接(手动复位、供电失效等)，但PC的外部模式依然处于运行当中，导致再次连接时调用串口应用时出错，也会弹出上述信息。此时需重启MATLAB。
+
+   -  **问题3：** 点击 ``Connect To Target`` 实现连接目标机操作时，弹出以下错误信息：``Checksum test (TARGET_DATA_MAP) failed`` 。
+
+      .. image:: media/image261.png
+         :align: center
+         :scale: 55 %
+
+      **解决方法：**
+
+         - 1) 此问题是由于工程中的Simulink程序与生成代码不匹配，很可能无意间做出修改，遂，删除已存在的 ``RTW`` 文件，重新编译下载程序至目标机。
+         - 2) 若上述步骤未解决，请检查文件中是否有其它 ``RTW`` 文件存在，以及现MATLAB目录是否定位到此工程文件下。
+
+6.2.3 运行
+~~~~~~~~~~
+
+   在实时半实物仿真中，PC与目标机需要建立牢固的实时传输通道，因此硬件连接上的不牢固、以及超大量数据的实时传输都会造成运行出错。
+
+   -  **问题4** ：在运行时，通讯接线不牢固、或者手动操作失误，导致目标机主动断开，而非在Simulink端手动点击断开，使得Simulink无法操作。
+
+      **解决方法：** 重启MATLAB，并固定通讯接线。
+
+   -  **问题5：** 在运行时，大量数据要进行收发，导致通讯堵塞，会弹出如下错误信息：
+
+      .. image:: media/image262.png
+         :align: center
+         :scale: 25 %
+
+      .. image:: media/image263.png
+         :align: center
+         :scale: 40 %
+
+      .. image:: media/image264.png
+         :align: center
+         :scale: 40 %
+
+      **解决方法：** 重启MATLAB，减少一次性传输的数据量，或者降低 ``Interface`` 设置中串口的波特率。
+
+   -  **问题6：** 在运行时，MATLAB报出 ``出现未知错误`` ，并直接退出。
+
+      **解决方法：** 一方面是程序复杂度过高，目标机处理能力有限，出现此次错误的同时，目标机可能会发散也可能依然正常运行。因此，需要用户优化程序，减少不必要的模块，另一方面降低ODE，最好使用 ``discrete`` Solver。
+
+6.2.4模块使用
+~~~~~~~~~~~~~
+
+   在模块使用当中，由于硬件或者引脚冲突，导致部分模块在处于某种模式时无法使用，在此对部分模块说明。
+
+   -  **Pulse_Counters模块与PWM模块** ：具体使用参照<链接>。由于两模块使用的都是STM32单片机(目标机)的TIM资源，因而在进行运动控制使用多个电机时，容易出现引脚冲突问题，在此给出使用有效结果以及多电机策略。
+
+      .. image:: media/image265.png
+         :align: center
+         :scale: 55 %
+
+      单独针对PWM模块进行测试，结果如下，可以实现8电机的控制，但无法使用编码器。
+
+      .. image:: media/image266.png
+         :align: center
+         :scale: 55 %
+
+      我们再对Pulse_Counters模块进行测试，结果如下，在同时使用PWM Generators 模块和Pulse_Counters模块时，可以最多使用4电机和3编码器，但如果使用TB6612FNG模块和Pulse_Counters模块，则可以使用4电机和4编码器，即TB6612FNG模块使用一个TIM去控制4电机，而另外四个TIM被PWM Generators 模块去使用驱动4个编码器。
+
+      .. image:: media/image267.png
+         :align: center
+         :scale: 20 %

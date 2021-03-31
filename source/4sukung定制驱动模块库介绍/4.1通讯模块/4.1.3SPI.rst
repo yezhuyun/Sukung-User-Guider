@@ -1,0 +1,35 @@
+
+4.1.3 SPI 
+~~~~~~~~~
+
+   此模块包括两个子模块： ``SPI_Write`` 模块和 ``SPI_Read`` 模块。此节介绍两模块的参数配置要点，使得用户能够利用此模块实现目标机与外部设备之间的SPI通讯。
+
+   -  (1) **SPI_Write模块**
+
+      通过 ``SPI_Write`` 模块，用户可以将要发送的 ``Write_Data`` 发送到从机，实现通信数据传输。
+
+         • ``SPI Index``：选择目标机SPI外设，可填1、2和3，分别表示 ``SPI1`` 、``SPI2`` 和 ``SPI3``；
+         • ``Write_Buffer_Size``：单次要发送数据长度，根据 ``Write_Data`` 的长度决定；
+         • ``Write_Data``：单次要发送的数据，十进制表示，要与 ``Write_BufferSize``  匹配；
+         • ``Sample_Time``：采样时间，推荐与系统步长一致。
+
+   .. image:: media/image67.png
+      :align: center
+      :scale: 70 %
+
+   -  (2) **SPI_Read模块**
+
+      通过 ``SPI_Read`` 模块，用户可以读取从机的数据，并经输出端输出，实现数据的读取。
+
+      • ``SPI Index``：选择目标机SPI外设，可填1、2和3，分别表示 ``SPI1`` 、 ``SPI2`` 和 ``SPI3``；
+      • ``Baudrate_Prescaler``：波特率预分频系数；
+      • ``Read_Buffer_Size``：要读取的数据长度；
+      • ``Sample_Time``：采样时间，推荐与系统步长一致。
+
+   .. image:: media/image68.png
+      :align: center
+      :scale: 70 %
+
+.. note:: 用户可根据设备条件自行选择，由于SPI1 和SPI3 引脚存在复用情况，可能会造成引脚冲突，为此，为了保证功能的正常实现，建议用SPI2。
+
+.. note:: STM32单片机(目标机)上的SPI协议，原理介绍以及使用推荐参考\ `SPI 协议 <https://zhuanlan.zhihu.com/p/290620901>`__\ 。

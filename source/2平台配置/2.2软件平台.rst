@@ -1,0 +1,36 @@
+.. _软件平台:
+
+2.2软件平台
+-----------
+
+   Sukung系统所需的支撑软件如图9所示，包括：MATLAB/Simulink, Keil V5 和Sukung软件包。
+
+   .. image:: media/image13.jpg
+      :align: center
+      :scale: 35 %
+
+2.2.1 MATLAB /Simulink
+~~~~~~~~~~~~~~~~~~~~~~
+
+   MATLAB/Simulink是Mathworks 公司的一类可视化仿真软件，可方便的通过模块化编程搭建动态系统，用于系统建模、控制、优化等仿真功能，被广泛应用于自动化及相关专业本科与研究生的教学和科研。Sukung软件包支持MATLAB R2018b 版(推荐使用)，主要依赖的 MATLAB 工具箱包括：
+
+      -  MATLAB/Simulink
+      -  MATLAB Coder
+      -  Simulink Coder
+      -  Embedded Coder
+
+.. warning:: Sukung系统不提供 MATLAB及相关工具箱的安装包与安装流程，请用户自行购买。
+
+2.2.2 Keil V5及以上版本
+~~~~~~~~~~~~~~~~~~~~~~~
+
+   Keil公司推出Keil MDK v5使用uVision5 IDE集成开发环境，是针对ARM微控制器的一款集成开发工具。选用了最新发行的Arm Compiler V6编译器（下文将简称为AC6），版本号为AC6.12。该编译器可以大幅提升系统模型的编译速度。
+
+.. warning:: Sukung系统不提供 **Keil** 及相关工具箱的安装包与安装流程，请读者自行购买。
+
+2.2.3 Sukung软件
+~~~~~~~~~~~~~~~~
+
+   Sukung是由华侨大学先进控制实验室研发的嵌入式实时半实物仿真平台，其核心是一套面向MATLAB/Simulink和嵌入式目标机STM32F103ZET6的高性能接口。能够将嵌入式目标机与MATLAB/Simulink进行无缝连接。
+
+   Sukung软件的获取：`GITHUB <https://github.com/yezhuyun/Sukung-Setup>`_ 。

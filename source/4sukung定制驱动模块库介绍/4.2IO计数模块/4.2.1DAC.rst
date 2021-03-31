@@ -1,0 +1,16 @@
+4.2.1 DAC
+~~~~~~~~~
+
+   全称Digital to Analog Converter，数/模转换模块，可以实现离散数字信号到连续模拟信号的转换。用户可以给定一个输入数字量(0-4095)，来指定某一引脚输出对应线性模拟量(0-3.3v)。
+
+      • 独立双通道，分别对应 ``GPIOA`` 的 ``Pin4`` 和 ``Pin5`` 引脚;
+      • 采样时间 ``Sample Time`` 设定和系统控制步长相同;
+      • 输入和输出是线性关系；
+      • ``STM32`` 的 ``DAC`` 模块是12位数字输入，电压输出型的 ``DAC`` 。
+
+   .. image:: media/DAC.jpg
+      :align: center
+      :scale: 35 %
+
+.. note:: DAC在STM32单片机上的工作原理，推荐参考\ `博客 <https://blog.csdn.net/qq_38410730/article/details/80095881>`__\ 。
+

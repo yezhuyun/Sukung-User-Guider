@@ -1,0 +1,11 @@
+2.4 安装完成效果  
+------------------------------------------
+
+   -  1. 按照上节内容按照完毕之后，重启MATLAB，命令行窗口出现 ``Sukung is ready.`` ，且无其它警示。
+
+   -  2. 新建并打开工程，Simulink顶部菜单栏与Simulink Library Browse中分别会出现Sukung相关的设置项和模块库，如下图所示。
+
+   .. figure:: Setup_Media/image12.png
+      :align: center
+      :scale: 65 %
+

@@ -1,0 +1,26 @@
+6.3 支持与引用
+--------------
+
+   -  定制与合作请联系：yezhuyun2004@sina.com;
+
+   -  技术问题可入群交流：
+   -  
+      群名称：Sukung半实物仿真技术交流群；
+
+      QQ群：661419695；
+
+         .. image:: media/image268.png
+            :align: center
+            :scale: 55 %
+
+      
+
+   -  相关论文引用：
+
+      - [1] Gao Z. Scaling and Parameterization Based Controller Tuning[C]// American Control Conference. IEEE, 2003:4989-4996.
+
+      - [2] Nie Zhuoyun, Zhang Bing, Wang Qing-Guo, Liu Rui-Juan, Luo Ji-Liang. Adaptive active disturbance rejection control guaranteeing uniformly ultimate boundedness and simplicity. International Journal of Robust and Nonlinear Control, 2020, 30(17): 7278-7294.
+
+      - [3] Nie Zhuoyun, Zhu Chao, Wang Qingguo, Gao Zhiqiang, Shao Hui, Luo Jiliang. Design, analysis and application of a new disturbance rejection PID for uncertain systems. ISA Transactions, 2020, 101: 281-294.
+
+      - [4] 李高铭，聂卓赟，李兆洋，郑义民，罗继亮. 非平衡负载下轮式移动机器人的抗扰PID控制. 控制理论与应用. 2021.

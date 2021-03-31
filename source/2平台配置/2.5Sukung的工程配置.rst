@@ -1,0 +1,105 @@
+.. _工程配置:
+
+2.5 Sukung的工程配置  
+----------------------------------------------
+
+在本节，将会帮助大家了解如何对一个Simulink工程进行Sukung环境配置，主要分为以下几个步骤。
+
+
+步骤1：系统目标文件(TLC)选择与一键式参数配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   -  1. 新建Simulink工程 ``LED.slx`` ;
+   -  2. 点击齿轮样式的 ``Model Configuration Parameters`` ，进入工程的参数配置界面。点击 ``Code Generation`` 这一菜单。
+   -  3. 点击 ``Browse..`` ，等待数秒，在弹出的 ``System Target File Browser`` 窗口中，找到 ``Sukung.tlc`` 的 ``Embedded Target`` 类型，选择，确认。如下图所示。
+
+   .. figure:: Setup_Media/image13.png
+      :align: center
+      :scale: 50 %
+
+   执行完上述步骤，即会出现下图所示的现象：
+
+   .. figure:: Setup_Media/image14.png
+      :align: center
+      :scale: 60 %
+
+   -  4. 展开 ``Code Generation`` 菜单栏，点击 ``Sukung Options`` ，再点击 ``Sukung recommended parameters`` ，即完成Sukung参数一键式配置。
+
+   .. figure:: Setup_Media/image15.png
+      :align: center
+      :scale: 60 %
+
+
+.. warning:: 若 ``Language`` 栏未出现 ``C++`` ，则可使用我们提供的空模板文件，无需此步骤的环境配置，直接进行模型搭建即可使用。
+
+.. _实时传输层配置:
+
+步骤2：实时传输层配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   若上述步骤配置得当，则 ``Code Generation`` 下的 ``Interface`` 子菜单栏，会出现下图所示的 ``External model configuration`` 界面。
+
+   .. figure:: Setup_Media/image16.png
+      :align: center
+      :scale: 60 %
+
+   此配置是对PC与目标机之间的传输介质以及相关参数的设置，本版本默认只提供 ``serial`` 有线的实时传输方式(目标机在Sukung环境中运行时的数据传输方式)。``MEX-file arguments`` 的参数具体意义如下：
+
+      -  ``0``：日志输出等级，用户不需修改；
+      -  ``5``：对应目标机设备连接的COM5端口，用户使用时，需先将目标机与PC通过USB线连接，再查看PC上目标机的对应端口，对应作修改，查看方式见\ `博客 <https://jingyan.baidu.com/article/63acb44a71f5a361fdc17e56.html>`__\ ；
+      -  ``1200000``：串口传输的波特率，最高可填2000000，若传输数据(示波器数量、Toworkspace模块)过多，则需降低波特率，以保证数据及时处理；相应的数据较少，可适当增加波特率；
+      -  ``10``：等待时间，单位(s)，PC发出 ``EXT_CONNECT`` 指令，等待目标机响应，超过等待时间则报错，需检查通讯是否正确与正常，再次连接。
+
+.. _步长(Sample Time)和Solver配置:
+
+步骤3：步长(Sample Time)和Solver配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   完成上述Sukung相关配置后，还需对Simulink的相关工程参数进行配置。由于步长与ode的选择会影响传输的数据量和目标机的运行效率，所以我们在此说明。
+
+   .. figure:: Setup_Media/image17.png
+      :align: center
+      :scale: 60 %
+
+   经参数一键配置，Solver默认采用 ``ode1``，步长默认 ``0.01`` ，针对Sukung的使用，有如下建议：
+
+      -  ``Solver``：搭建的Simulink算法复杂度过高，则建议ode，甚至采用 ``discrete`` 方式(需采用离散形式搭建算法)；若算法复杂度较低，建议使用 ``ode3`` 或者 ``auto`` ，以确保算法经代码生成的精确性；
+      -  ``步长(Sample Time)``：推荐使用0.005，较低的步长设置对目标机的程序运算能力，以及传输实时性有较高要求，所以需综合考虑进行设置，以确保目标机正常运行。
+
+.. _数据保存:
+
+
+步骤4：数据接收与存储配置 :ref:`性能测试` 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   在实时半实物仿真过程中，数据接收与存储是不可或缺的。Sukung通过对Simulink的外部模式数据结构及传输层接口优化，实现了几乎无存储限制的 ``Scope`` 、``Toworkspace`` 等 ``Sinks`` 类模块的数据接收与存储功能。
+
+   .. figure:: Setup_Media/image18.png
+      :align: center
+      :scale: 60 %
+
+   在使用此功能前，我们需对此功能进行配置。回到 ``LED.slx`` 的Simulink主界面，我们点击 ``Code`` 菜单栏，打开 ``External Mode Control Panel``，会出现下图窗口：
+
+   .. figure:: Setup_Media/image19.png
+      :align: center
+      :scale: 80 %
+
+   -  1. 信号使能设置：点击 ``Signal & Triggering…`` ，则出现下图所示窗口。我们可以在此窗口使能各个 ``Scope`` 模块的数据接收功能。并设置``信号使能设置``参数，对要存储的参数进行分段存储，如果存储的数据超过``信号使能设置``，则自动将下一部分数据存储到下一个文件中。一般推荐将``信号使能设置``设置尽量大，以方便对数据进行处理。
+
+   .. figure:: Setup_Media/image20.png
+      :align: center
+      :scale: 60 %
+
+   -  2. 数据存储设置：点击 ``Data Archiving…`` ，则出现如下图所示窗口。通过此窗口设置，可以将工程获取的数据以 ``Data.mat`` 存储到 ``C:\Project`` 路径下，在此必须勾选 ``Enable archiving`` 。每次运行都会生成 ``Data.mat`` ，并且尾缀序号。
+
+   .. figure:: Setup_Media/image21.png
+      :align: center
+      :scale: 70 %
+
+   至此，通过上述步骤的设置，我们可以正式开始一个工程 :ref:`LED灯`。
+
+.. warning:: 设置 ``Toworkspace`` 模块，应当将数据形式设置为 ``array`` 。如下图所示。
+
+   .. figure:: Setup_Media/image22.png
+      :align: center
+      :scale: 75 %

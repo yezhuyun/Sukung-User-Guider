@@ -1,0 +1,196 @@
+.. _LED灯:
+
+5.1点亮一个LED灯：Simulink环境配置与编译下载
+--------------------------------------------
+
+在此节中，将会给大家介绍如何通过Sukung环境点亮目标机上的一个LED灯，使得可以在Simulink上对目标机的LED灯进行实时控制，以此来了解Sukung的模块参数配置、编译、下载、控制和数据接收存储等过程。
+
+
+步骤1：实验目标
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   通过Sukung环境，实现在Simulink上对目标机上的LED灯(PB5引脚)进行实时控制。
+
+
+步骤2：硬件准备与连接
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   准备STM32F103ZET6型号的单片机(目标机)，一根USB线，一台装有Sukung软件并且已激活的PC。将目标机通过USB线连接至PC，如下图所示。
+
+   .. figure:: Setup_Media/image23.png
+      :align: center
+      :scale: 35 %
+
+
+步骤3：工程配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   建立好硬件连接后，我们按照 :ref:`工程配置` 的相关步骤建立了 ``LED.slx`` 工程。
+
+   -  1. 此案例中目标机与PC的连接端口为 ``COM4`` ，如下图所示。则按照 :ref:`实时传输层配置` ，进行设置，即 ``MEX-file arguments`` 为 ``0,4,1200000,10`` ；
+
+   .. figure:: Setup_Media/image24.png
+      :align: center
+      :scale: 65 %
+
+   -  2. 由于程序并不复杂，则按照步骤 :ref:`步长(Sample Time)和Solver配置` ，我们配置步长为 ``0.005`` ，Solver为 ``ode1`` ；
+
+   .. figure:: Setup_Media/image25.png
+      :align: center
+      :scale: 50 %
+
+   -  3. 由于此案例无需进行数据查看和存储，因此，对 ``External Mode Control Pane`` 不做配置。
+
+.. warning:: 单个Simulink工程，存放于单个文件夹内，防止运行时出现不可预料的错误。例，新建LED.slx则将其存放在led文件夹内，若新建motor.slx则不能再放于led文件夹内。
+
+步骤4：模块参数配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   由于是对LED灯进行控制，所以需要用到IO引脚模块。打开 ``Simulink Library Browser`` ，展开 ``Sukung – HuaQiao University - …`` ，选择IO，将 ``GPIO_Write`` 模块移动到LED工程中。
+
+   .. figure:: Setup_Media/image26.png
+      :align: center
+      :scale: 55 %
+
+   选择模块之后，在 ``LED.slx`` 的主界面双击模块，进入 ``GPIO_Write`` 模块的参数配置界面。由于LED处于单片机(目标机)的 ``PB5`` 引脚，且GPIO设置为推挽模式，则我们作如图下所示配置。
+
+   .. figure:: Setup_Media/image27.png
+      :align: center
+      :scale: 70 %
+
+   GPIO的高低电平是通过外部输入到 ``GPIO_Write`` 模块的 ``1``和``0`` 实现的，那么，我们就可以搭建实现LED灯亮灭的程序框图，如下图所示。
+
+   .. figure:: Setup_Media/image28.png
+      :align: center
+      :scale: 25 %
+
+.. warning:: IO模块的具体使用细节，见 :ref:`GPIO` 。
+
+步骤5：程序编译和下载
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   完成上述步骤后，点击 ``Build`` ，程序自行编译，用户可以点击出现的 ``View diagnostics``，查看输出信息，如上图所示。在程序下载时，还需要用户依据如下输出信息，在MATLAB命令行窗口输入目标机进入下载模式时，对应串口信号DTR/RTS的电平模式，即如输出信息显示，此次案例使用 ``mode2`` 则命令行窗口输入 ``2`` 。并且，还要输入串口对应序号，即 ``COM4`` 对应的序号 ``0`` ，完成下载。
+
+   .. code-block:: text
+      :emphasize-lines: 17
+
+      …
+
+      ### Created
+
+      ### Successful completion of build procedure for model: LED
+
+      ### Creating HTML report file LED_codegen_rpt.html
+
+      ### Downloading LED: "%MATLAB_ROOT%\bin\win64\gmake" -f LED.mk
+      GENERATE_ASAP2=0 DOWNLOADAPPLICATION=1 OPTS="-DEXT_MODE
+      -DON_TARGET_WAIT_FOR_START=0" download
+
+      Downloading to Sukung-MiniBox ...
+
+      There are four available mode. Please make choice according to your hardware.
+       The mode0: no use DTR/RTS.
+       The mode1: DTR高电平复位, RTS低电平进bootloader.
+       The mode2: DTR低电平复位, RTS高电平进bootloader
+       The mode3: RTS高电平复位, DTR低电平进bootloader
+      Please write the DTR/RTS mode required:
+      2
+      The available serial port：
+
+      0:COM4
+
+      Please write the serial number required:
+
+
+   完成下载时，``View diagnostic`` 会出现如下输出，说明下载完成。
+
+   .. code-block:: text
+      :emphasize-lines: 15,54,56
+
+      ### Created
+
+      ### Successful completion of build procedure for model: LED
+
+      ### Creating HTML report file LED_codegen_rpt.html
+
+      ### Downloading LED: "%MATLAB_ROOT%\bin\win64\gmake" -f LED.mk
+      GENERATE_ASAP2=0 DOWNLOADAPPLICATION=1 OPTS="-DEXT_MODE
+      -DON_TARGET_WAIT_FOR_START=0" download
+
+      Downloading to Sukung-MiniBox ...
+
+      There are four available mode. Please make choice according to your hardware.
+       The mode0: no use DTR/RTS.
+       The mode1: DTR高电平复位, RTS低电平进bootloader.
+       The mode2: DTR低电平复位, RTS高电平进bootloader
+       The mode3: RTS高电平复位, DTR低电平进bootloader
+      Please write the DTR/RTS mode required:
+      2
+      The available serial port：
+
+      0:COM4
+
+      Please write the serial number required:
+
+      Serial port COM4 has been selected
+
+      connecting device...
+
+      Device connected successfully!
+
+      The supported commands of STM32: 00 01 02 11 21 31 43 63 73 82 92
+
+      The bootloader vesion of STM32: vesion2.2
+
+      STM32 device ID: Version 0414
+
+      The data starting from the specified address(UID):
+      0x36FFD4055257383116850643
+
+      Flash Size of STM32: 32KB
+
+      Erasing Flash memory pages...
+
+      Erase Flash Memory successfully!
+
+      Menory address 0x08000000 writing 256 bytes
+
+      Menory address 0x08000100 writing 256 bytes
+
+      ...
+
+      ...
+
+      ...
+
+      Menory address 0x08012400 writing 256 bytes
+
+      Menory address 0x08012500 writing 216 bytes
+
+      write successfully
+
+      ### Downloaded
+
+      Build process completed successfully
+
+   具体的下载过程，可见下图。
+
+   .. figure:: Setup_Media/download.jpg
+      :align: center
+      :scale: 30 %
+
+.. note:: 若由于输入指令出错或者未实现有效通讯等情况，导致下载失败，即出现 ``Connecting device`` 。则在命令行窗口执行两次 ``Ctrl + C``，退出下载程序。再次执行 ``Build`` 操作，也可能出现 ``||和&&运算符的操作数必须能够转换为逻辑标量值`` ，或者出现 ``Detected recursive call to slbuild,...`` , 再次执行 ``Build`` 操作即可。
+
+步骤6：工程连接与运行
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   下载完毕之后，切换到 ``External`` 外部模式，点击 ``Connect To Target`` ，``Run`` 按钮被使能，既可点击，运行程序。具体操作见下动图。
+
+   .. figure:: Setup_Media/image30.gif
+      :align: center
+      :scale: 150 %
+
+.. warning:: 在断开连接后，如想再与目标机连接，在程序结构或者位置未发生改变的情况下，可直接连接运行，否则会弹出程序与 ``map`` 不匹配的错误信息，需重新下载程序。
+
+.. warning:: 在运行时，可对程序内的常量直接修改，实现在线调参，或者断开连接后，对赋值变量在MATLAB的命令行窗口进行参数调整。涉及到m函数、传递函数等影响生成代码的模块，不可直接修改，若修改，则需重新下载程序。
+

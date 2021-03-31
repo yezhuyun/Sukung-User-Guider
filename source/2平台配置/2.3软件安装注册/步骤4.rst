@@ -1,0 +1,34 @@
+
+步骤4：注册与激活
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   .. figure:: Setup_Media/image88.png
+      :align: center
+      :scale: 60 %
+
+   -  1. 重启MATLAB，会出现以下两种情况：
+
+      -  (a) 首次使用Sukung，即PC未注册激活，会出现上图请求激活界面：
+      -  (b) 若非首次注册使用Sukung，且注册码已过期，则会出现如下图警告界面：
+
+   .. figure:: Setup_Media/image9.png
+      :align: center
+      :scale: 90 %
+
+   出现上述两种情况，则需在命令行窗口输入控制指令 ``Sukung_Activate``，进行Sukung的注册与激活。
+
+   -  2. 输入指令后，出现版本的选择，目前Sukung版本为MiniBox版，所以点击 ``MiniBox`` 。
+
+   .. figure:: Setup_Media/image10.png
+      :align: center
+      :scale: 60 %
+
+   -  3. 选择版型之后，弹出授权认证窗口，自动生成机器码。用户需将机器码交给客服人员，并登记信息，客服人员再将授权序列号(注册码)交给用户，填入注册界面，完成注册与激活。
+
+   .. figure:: Setup_Media/image11.png
+      :align: center
+      :scale: 80 %
+
+   至此，完成了Sukung的安装与注册。
+
+.. warning:: 若使用Sukung相关功能，则需要在启动MATLAB时，保证PC连接网络，以此保证Sukung的正常使用。

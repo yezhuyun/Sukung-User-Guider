@@ -1,0 +1,27 @@
+4.3.2 Display模块
+~~~~~~~~~~~~~~~~~
+
+    ``Display`` 模块现包含一个模块：``TFT-LCD`` 模块。通过显示模块，可用于数据实时显示，用户可以直观地查看相关数据。
+
+   基于ST7735S 驱动的液晶屏显示模块，具体原理和数据手册参考\ `ST7735S 数据手册 <http://www.datasheet-pdf.com/mobile/1146747/ST7735S.html>`__\ 。
+
+   为了使用此模块，用户需要对其进行参数配置。
+      • ``Time``：模块采样时间。
+
+   .. image:: media/image87.png
+      :align: center
+      :scale: 60 %
+
+   对应STM32板，具体的引脚配置及基本功能：
+
+   .. image:: media/image88.png
+      :align: center
+      :scale: 80 %
+
+为了直观展示具体，做了相应的显示测试：
+
+.. image:: media/image89.png
+   :align: center
+   :scale: 80 %
+
+.. note:: 考虑到LCD 的刷新频率，此模块的采样时间需要独立设置，建议采样时间不低于0.02s。

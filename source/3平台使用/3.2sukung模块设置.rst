@@ -1,0 +1,8 @@
+3.2 Sukung模块设置
+------------------
+
+   Sukung的IO资源用于与外设进行实时数据交互。相应地，在Simulink中使用各资源模块需要与外设进行匹配，包括通讯模式匹配，引脚功能匹配与功能参数匹配，如下图所示。
+
+   .. image:: media/image40.jpg
+      :align: center
+      :scale: 35 %

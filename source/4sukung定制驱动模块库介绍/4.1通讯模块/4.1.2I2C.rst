@@ -1,0 +1,73 @@
+
+4.1.2 I2C
+~~~~~~~~~
+
+   此模块包括三个子模块：``I2C_WriteBytes`` 模块、``I2C_WriteBytes_Loop`` 模块和 ``I2C_ReadByte`` 模块。此节介绍三个模块的参数配置要点，使得用户能够利用此模块实现目标机与外部从机进行I2C通讯。
+
+   -  (1) **I2C_WriteBytes模块**
+
+      通过 ``I2C_WriteBytes`` 模块，用户可以将要发送的 ``Command Data`` 单次发送到从机，一般用于对从机的初始化或者模式配置。
+
+         • ``I2C Index``：选择目标机I2C外设，可填1和2，分别表示 ``I2C1`` 和 ``I2C2``; 
+         • ``I2C Mode``：设置 ``I2C`` 模式，标准/快速模式；
+         • ``I2C Fast Mode Duty Cycle``：快速模型下的预分频设置；
+         • ``I2C SCL Rise Time``：SCL上升时间设置(纳秒)，推荐1000；
+         • ``Is Enable Clock Stretching``：选择是否使用I2C时钟延展，推荐使用；
+         • ``Is Need I2C1 Pin Remap``：选择是否对I2C1引脚重映射，引脚见下图；
+         • ``Slave Address``：从机地址，十进制表示；
+         • ``Command Length``：单次要发送的命令长度，根据 ``CommandData`` 的长度决定；
+         • ``Command Data``：单次要发送的数据，十进制表示，要与 ``CommandLength`` 匹配；
+         • ``Sample Time``：采样时间，推荐与系统一致。
+
+      .. image:: Block_Media/image4.png
+         :align: center
+         :scale: 100 %
+
+   -  (2) **I2C_WriteBytes_Loop模块**
+
+      通过 ``I2C_WriteBytes_Loop`` 模块，用户可以将 ``WriteData`` 循环发送到从机，一般用于读从机数据前的寄存器设置。
+
+         • ``I2CIndex``：选择目标机I2C外设，可填1和2，分别表示 ``I2C1`` 和 ``I2C2``;
+         • ``I2C Mode``：设置 ``I2C`` 模式，标准/快速模式；
+         • ``I2C Fast Mode Duty Cycle``：快速模型下的预分频设置；
+         • ``I2C SCL Rise Time``：SCL上升时间设置(纳秒)，推荐1000；
+         • ``Is Enable Clock Stretching``：选择是否使用I2C时钟延展，推荐使用；
+         • ``Is Need I2C1 Pin Remap``：选择是否对I2C1引脚重映射，引脚见下图；
+         • ``Slave Address``：从机地址，十进制表示；
+         • ``Write Buffer Size``：单次要发送的命令长度，根据 ``Write Data`` 的长度决定；
+         • ``Write Data``：单次要发送的数据，十进制表示，要与 ``Write Buffer Size`` 匹配；
+         • ``Sample Time``：采样时间，推荐与系统一致。
+
+      .. image:: Block_Media/image5.png
+         :align: center
+         :scale: 100 %
+
+   -  (3) **I2C_ReadBytes模块**
+
+      通过 ``I2C_ReadByte`` 模块，用户可以读取从机的数据，并经输出端输出，内部已进行数据拼接处理。
+      
+         • ``I2C Index``：选择目标机I2C外设，可填1和2，分别表示 ``I2C1`` 和 ``I2C2``;
+         • ``I2C Mode``：设置 ``I2C`` 模式，标准/快速模式；
+         • ``I2C Fast Mode Duty Cycle``：快速模型下的预分频设置；
+         • ``I2C SCL Rise Time``：SCL 上升时间设置(纳秒)，推荐1000；
+         • ``Is Enable Clock Stretching``：选择是否使用I2C时钟延展，推荐使用；
+         • ``Is Need I2C1 Pin Remap``：选择是否对 ``I2C1`` 引脚重映射，引脚见下图；
+         • ``Slave Read Address``：自从机读取数据的地址，十进制表示；
+         • ``Read Buffer Size``：要读取的数据长度；
+         • ``Sample Time``：采样时间，推荐与系统一致。
+
+      .. code-block:: C++
+
+         Out[i] = (int16)(((uint32)P_y[i] << 8) | (uint32)P_y[i+1]);
+
+      .. image:: Block_Media/image6.png
+         :align: center
+         :scale: 100 %
+
+   我们通过上述模块组合，实现了GY271传感器数据的读取，见\ *案例*\ 。I2C引脚图见下方。
+
+   .. image:: Block_Media/image7.png
+      :align: center
+      :scale: 70 %
+
+.. note:: STM32单片机(目标机)上的I2C协议，原理介绍以及使用，推荐\ `博客 <https://blog.csdn.net/zxh1592000/article/details/78732129>`__\ 。

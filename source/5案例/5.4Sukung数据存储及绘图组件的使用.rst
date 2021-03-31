@@ -1,0 +1,63 @@
+5.4Sukung数据存储及绘图组件的使用
+---------------------------------
+
+   **实验目标：**\ 分别使用“To Workspace”和“Scope”存储实验数据，并使用“Sukung绘图组件.app“在MATLAB环境下绘图。
+
+   在前面两个小节的基础上，进行本节实验。其中，硬件参数、系统相关信号设定、硬件连接、软件设计完全相同。
+
+步骤1：外部模式配置及“To Workspace”和“Scope”参数配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   外部模式及“To
+   Workspace”和“Scope”参数配置如下图所示，其中数据格式均为``Array``。
+
+      .. figure:: anlimedia/image74.png
+         :align: center
+         :scale: 35 %
+
+         **外部模式及“To Workspace”和“Scope”参数配置**
+
+   编译下载运行后所得数据如下图所示：
+
+      .. figure:: anlimedia/image75.png
+         :align: center
+         :scale: 35 %
+
+         **实验数据及数据预处理**
+
+   打包工作区变量，另存为testdate.mat。
+
+步骤2：Sukung绘图组app安装
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   首先将app安装包放入任意文件夹下，打开MATLAB
+   APP页面>安装App>选择安装包位置并打开>点击安装。
+
+      .. figure:: anlimedia/image76.png
+         :align: center
+         :scale: 35 %
+
+         **Sukung绘图组app安装图示**
+
+步骤3：使用Sukung绘图组件绘制曲线
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   打开app
+   “Sukung_plot_component”，点击“open”选择上一步保存的testdate.mat文件，根据数据量大小，等待时间有所不同，一般2s左右。选择各个坐标轴的数据，通过“preview”预览按钮，可以查看由X轴和Y轴数据绘制的图形，以检验数据选择是否正确。可通过app右侧修改标题及各坐标轴标签。
+
+      .. figure:: anlimedia/image77.png
+         :align: center
+         :scale: 35 %
+
+   **打开*.mat数据并选取各坐标轴数据**
+
+      .. figure:: anlimedia/image78.png
+         :align: center
+         :scale: 35 %
+
+         **四种绘图展示**
+
+小结
+~~~~
+
+   本次实验主要介绍了实验数据的存储方式，需要注意的是，实际实验中要注意数据传输的数量不应过多，以避免系统阻塞、崩溃。对于同一个信号“To Workspace”和“Scope”不要同时使用，任选其一即可。同时介绍了使用Sukung_plot\_component App绘制数据图像的基本流程，用户根据需要，选择使用。

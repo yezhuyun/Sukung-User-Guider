@@ -1,0 +1,34 @@
+1.3 效果展示
+------------
+
+1.3.1 独轮移动机器人
+~~~~~~~~~~~~~~~~~~~~~~
+   案例效果见\ `B站移动机器人案例 <https://www.bilibili.com/video/BV1Ro4y1R7Vx>`_\ 。
+
+   .. image:: media/image5.png
+      :align: center
+      :scale: 70 %
+
+1.3.2 板球系统
+~~~~~~~~~~~~~~~~~~~~~~
+   案例效果见\ `B站板球系统案例 <https://www.bilibili.com/video/BV1jf4y1e78H>`_\ 。
+
+   .. image:: media/image6.jpeg
+      :align: center
+      :scale: 70 %
+
+1.3.3 旋转倒立摆
+~~~~~~~~~~~~~~~~~~~~~~
+   案例效果见\ `B站旋转倒立摆案例 <https://www.bilibili.com/video/BV1r5411j7Gy>`_\ 。
+
+   .. image:: media/image7.png
+      :align: center
+      :scale: 70 %
+
+1.3.3 直流电机
+~~~~~~~~~~~~~~~~~~~~~~
+   案例效果见\ `B站电机示例 <https://www.bilibili.com/video/BV1H64y1u7r7>`_\ 。
+
+   .. image:: media/image8.png
+      :align: center
+      :scale: 100 %

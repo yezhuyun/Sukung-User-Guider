@@ -1,0 +1,253 @@
+.. _电机辨识:
+
+5.2直流电机系统辨识实验：数据保存
+---------------------------------
+
+   **实验目标：**\ 掌握直流电机调速系统原理，能够搭建调速系统；掌握编码器原理；掌握最小二乘法，应用于直流电机模型辨识。
+
+   .. note:: 可参考PPT：“直流电机系统辨识实验”(超链接)。
+
+系统框图
+~~~~~~~~
+
+   实验系统主要包括宿主机与目标机的数据通信、直流电机的驱动以及编码器脉冲数的采集三个部分，如下图所示。
+
+   .. figure:: anlimedia/image1.png
+      :align: center
+      :scale: 50 %
+
+**系统结构框图**
+
+硬件参数
+~~~~~~~~
+
+   直流电机型号为MG513P30，额定电压12V，减速比30：1，带500线光电编码器。驱动选择L298N双H桥驱动板。电机详细参数及L298N驱动板如下图所示。
+
+   .. figure:: anlimedia/image2.png
+      :align: center
+      :scale: 50 %
+
+**驱动及电机详细参数图**
+
+系统相关信号设定
+~~~~~~~~~~~~~~~~
+
+   设输入信号u为PWM波占空比，u∈[-1，1]，当u<0时表示电机反转；电机输出y为转速，单位：转每秒(r/s)，计算公式如下：
+
+   .. math::
+      
+      y = \frac{{num}}{{{\rm{500*}}30*4*T}}(r/s)
+
+   其中：\ *num*\ 表示当前周期脉冲数；500是编码器线数；30为电机减速比；4为采用编码器四倍频计数模式；\ *T*\ 为采样周期(控制步长)。
+
+步骤1：硬件连接
+~~~~~~~~~~~~~~~
+
+   硬件连接方式如下图所示，其中上位机与单片机通过USB串口连接；单片机产生PWM调节驱动输出电压；直流电机由L298N驱动；编码器输出的高低电平信号通过单片机引脚进行采集并由计数器进行计数。
+
+   .. figure:: anlimedia/image4.png
+      :align: center
+      :scale: 35 %
+
+**系统硬件连接图**
+
+步骤2：驱动板测试
+~~~~~~~~~~~~~~~~~
+
+   实验开始前，需要测试各部分能否正常工作，首先来测试驱动板输出：
+
+   - 1)在Simulink中搭建“PWM Generator”；
+   - 2)设置模块参数和占空比，如下图所示；
+   - 3)程序下载运行，并通过数字示波器观测驱动输出。
+
+   .. figure:: anlimedia/image5.png
+      :align: center
+      :scale: 35 %
+
+**直流电机驱动板测试图**
+
+.. note:: Simulink相关环境设置及操作注意事项可参考 :ref:`工程配置` 。
+
+步骤3：直流电机及编码器测试
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   直流电机及编码器测试主要测试电机能否正常运转以及编码器是否正常工作，基本步骤如下：
+
+   - 1)在Simulink中搭建“Pulse Counter Channel”模块；
+   - 2)配置模块参数和转速计算环节，如下图所示；
+   - 3)程序下载运行，通过Scope观察输出转速。
+
+      .. figure:: anlimedia/image6.png
+         :align: center
+         :scale: 35 %
+
+**直流电机及编码器测试**
+
+步骤4：离线辨识数据采集
+~~~~~~~~~~~~~~~~~~~~~~~
+
+   离线辨识需要用到电机输入占空比\ *u*\ 以及输出转速\ *y*\ 的运行数据。
+
+   .. note:: Simulink运行数据两种保存方式见 :ref:`数据保存` 。
+
+   需要说明的是，Scope以及To Workspace模块的置入增加了单片机实时通信负担。为了保证控制步长准确和控制实时性，不推荐大量使用Scope及To Workspace模块。
+
+      .. figure:: anlimedia/image7.png
+         :align: center
+         :scale: 30 %
+
+**数据采集示意图**
+
+步骤5：离线辨识算法设计
+~~~~~~~~~~~~~~~~~~~~~~~
+
+   设电机模型为：
+
+   .. math::
+
+      \frac{y}{u} = \frac{K}{{{s^2} + as + b}}
+
+
+   离散化为：
+
+   .. math::
+
+      y(k) =  - \underbrace {(aT - 2)}_{{\theta _1}}y(k - 1) - \underbrace {(1 - aT + b{T^2})}_{{\theta _2}}y(k - 2) + \underbrace {K{T^2}}_{{\theta _3}}u(k - 2)
+
+   其中，\ *T*\ 为采样周期(控制步长)，取0.002\ *s*\ 。\ *K*\ 、\ *a*\ 、\ *b*\ 为未知参数。构建数据向量 :math:`\varphi (k)` 和参数向量 :math:`\theta (k)` ：
+
+   .. math::
+      \left\{ \begin{array}{l}
+      {\bf{\varphi }}(k) = {[ - y(k - 1), - y(k - 2),u(k - 2)]^T}\\
+      {\bf{\theta }} = {[{\theta _1},{\theta _2},{\theta _3}]^T}
+      \end{array} \right.
+
+   构造输出向量\ **Y**\ 和矩阵 :math:`\Phi` ：
+
+   .. math::
+      {\bf{Y}} = \left[ {\begin{array}{*{20}{c}}
+      {y(1)}\\
+      {y(2)}\\
+      \vdots \\
+      {y(L)}
+      \end{array}} \right],{\bf{\Phi }}{\rm{ = }}\left[ {\begin{array}{*{20}{c}}
+      {{{\bf{\varphi }}^T}(1)}\\
+      {{{\bf{\varphi }}^T}(2)}\\
+      \vdots \\
+      {{{\bf{\varphi }}^T}(L)}
+      \end{array}} \right]
+
+   由批处理最小二乘法计算参数向量公式如下：
+
+   .. math::
+      \mathord{\buildrel{\lower3pt\hbox{$\scriptscriptstyle\frown$}} 
+      \over \theta }  = {\left( {{{\bf{\Phi }}^T}{\bf{\Phi }}} \right)^{ - 1}}{{\bf{\Phi }}^T}{\bf{Y}}
+
+   根据系统辨识原理可知，模型参数辨识的精度依赖于输入信号。合理选用辨识输入信号，是保证获得理想辨识结果的关键之一。为简化描述，本次实验中仅采用了常值输入。建议使用者采用更合理的输入信号方案，推荐M序列。离线辨识结果如下图所示：
+
+      .. figure:: anlimedia/image16.png
+         :align: center
+         :scale: 35 %
+
+   **批处理最小二乘法/离线辨识**
+
+步骤6：离线辨识模型在线验证
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   将所得模型置入目标机与系统同时运行，如下图所示，可见离线辨识模型输出与电机实际输出基本吻合。
+
+   .. figure:: anlimedia/image17.png
+      :align: center
+      :scale: 35 %
+
+**离线辨识模型的在线验证**
+
+步骤7：在线辨识算法设计
+~~~~~~~~~~~~~~~~~~~~~~~
+
+   在具体应用批处理最小二乘法时，条件比较苛刻，往往需要庞大的数据量才能得出理想的辨识结果，且不能用于参数在线实时估计。在自适应控制系统中，常常要求对象参数能够在线实时估计。因此递推最小二乘法被广泛应用。其基本思想是：新的估计值 :math:`{\bf{\hat \theta }}(k)` =旧的估计值 :math:`{\bf{\hat \theta }}(k - 1)` +修正项。基本步骤如下：
+
+      已知： :math:`{n_a}` ， :math:`{n_b}` ， :math:`d` 
+
+      Step1：设置初值 :math:`{\bf{\hat \theta }}(0)` 和 :math:`{\bf{P}}(0)` ，输入原始数据；
+
+      Step2：采样当前输出 :math:`y(k)` 和输入 :math:`u(k)` ；
+
+      Step3：利用下式计算 :math:`{\bf{K}}(k)` 、 :math:`{\bf{\hat \theta }}(k)` 和 :math:`{\bf{P}}(k)` ；
+
+      Step4： :math:`k \to k + 1` ，返回Step2，继续循环。
+
+      .. math::
+         \left\{ \begin{array}{l}
+         {\bf{K}}(k) = [{\bf{P}}(k - 1){\bf{\varphi }}(k)]/[1 + {{\bf{\varphi }}^T}(k){\bf{P}}(k - 1){\bf{\varphi }}(k)]\\
+         {\bf{\hat \theta }}(k) = {\bf{\hat \theta }}(k - 1) + {\bf{K}}(k)[y(k) - {{\bf{\varphi }}^T}(k){\bf{\hat \theta }}(k - 1)]\\
+         {\bf{P}}(k) = [{\bf{I}} - {\bf{K}}(k){{\bf{\varphi }}^T}(k)]{\bf{P}}(k - 1)
+         \end{array} \right.
+
+
+      初值为：
+
+      .. math::
+         \left\{ \begin{array}{l}
+         {\bf{P}}(0) = \alpha {\bf{I}}\\
+         {\bf{\hat \theta }}(0) = {\bf{\varepsilon }}
+         \end{array} \right.
+
+
+      其中， :math:`\alpha ` 为充分大的正实数 :math:`({10^4} \sim {10^6})` ， :math:`{\bf{\varepsilon }}` 为零向量或充分小的正的实向量。
+
+步骤8：在线辨识
+~~~~~~~~~~~~~~~
+
+   在Simulink中搭建下图所示结构，其中控制周期同样为0.002s。
+
+   .. figure:: anlimedia/image36.png
+      :align: center
+      :scale: 35 %
+
+   **在线辨识Simulink结构**
+
+   辨识结果如下：
+
+   .. figure:: anlimedia/image37.png
+      :align: center
+      :scale: 35 %
+
+   **在线辨识结果**
+
+   .. figure:: anlimedia/image38.png
+      :align: center
+      :scale: 35 %
+
+   **参数在线辨识结果连续化**
+
+步骤9：在线辨识模型验证
+~~~~~~~~~~~~~~~~~~~~~~~
+
+   将所得模型置入目标机与系统同时运行，如下图所示，可见在线辨识模型输出与电机实际输出基本吻合。
+
+   .. figure:: anlimedia/image39.png
+      :align: center
+      :scale: 35 %
+
+   **在线辨识模型验证**
+
+步骤10：离线-在线辨识的连续模型对比
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   离线辨识和在线辨识的连续模型如下图所示，不难发现，离线辨识与在线辨识得到的模型参数是相近的，符合预期。此外，实验中，可采用具有复杂频率特性的信号作为辨识输入；模型验证时，可采用不同于辨识输入的测试信号。
+
+   .. figure:: anlimedia/image40.png
+      :align: center
+      :scale: 35 %
+
+   **离线-在线辨识的连续模型对比**
+
+小结
+~~~~
+
+   - 1) 本实验搭建了直流电机调速系统，并通过Sukung实现了Simulink下的数据采集和系统测试；
+   - 2) 采集了直流电机输入输出数据，采用最小二乘批处理算法，在MATLAB环境中实现了直流电机的离线参数辨识；
+   - 3) 设计了递推最小二乘算法，并通过Sukung下载到目标机，实现了直流电机在线参数辨识；
+   - 4) 离线辨识与在线辨识结果符合预期；
+   - 5) 实验中，可进一步探讨M序列输入信号下的辨识效果，并研究各类系统辨识算法。

@@ -1,0 +1,170 @@
+5.3直流电机抗扰PID调速控制实验
+------------------------------
+
+   **实验目标：**\ 掌握直流电机调速系统原理，能够搭建调速系统；掌握抗扰PID基本原理，并应用于直流电机调速控制实验中。
+
+
+系统框图
+~~~~~~~~
+
+   实验系统主要包括宿主机与目标机的程序下载、实时数据通信两个部分，如下图所示。
+
+   .. figure:: anlimedia/image41.png
+      :align: center
+      :scale: 50 %
+
+   在上一小节 :ref:`电机辨识` 的基础上，进行本节实验。其中，硬件参数、系统相关信号设定、硬件连接以及驱动板、编码器测试与上节相同，此处不再赘述。
+
+步骤1：算法设计
+~~~~~~~~~~~~~~~
+
+   直流电机速度控制系统结构如下，其中，速度控制采用抗扰PID(DR-PID)控制器，可选前置滤波器以克服超调。
+
+   .. figure:: anlimedia/image42.png
+      :align: center
+      :scale: 35 %
+
+
+   \ `PID控制器的抗扰原理 <https://zhuanlan.zhihu.com/p/215290384#ref_1>`__\ 以及 章节 :ref:`DRPID` 。
+
+   DR-PID公式如下：
+
+   .. math::
+     C_{PID}^{DR}(s) = {K_P}\left( {1 + \frac{{{\omega _c}}}{{\alpha  + 1}}\frac{{\rm{1}}}{s}{\rm{ + }}\frac{\alpha }{{(\alpha  + 1){\omega _c}}}s} \right)
+
+   式中， :math:`{\omega _c}` 为期望带宽，决定闭环响应速度，期望闭环为 :math:`{\omega _c}/(s + {\omega _c})` ； :math:`{K_P}` 为控制器增益，相同条件下，逐步增大 :math:`{K_P}` 可改善系统性能； :math:`\alpha ` 代表相位超前补偿， :math:`\alpha  = 0` 为PI控制器， :math:`\alpha  = 1` 为ZN-PID。
+
+   **调参思路：**
+
+      - 1)先设定  :math:`{\omega _c}` (目标)，然后调节 :math:`{K_P}` 和  :math:`\alpha` (手段)；
+
+      - 2)如果系统存在超调，可在输入端加入滤波器(任意形式)。
+
+   上述公式适用于：机电系统、一阶时滞系统、积分型(液位)系统、最小/非最小相位系统等各类常见工业对象。
+
+   **相对于常规PID调参方法，抗扰PID有以下特点：**
+
+      - 1)主动抗扰：具有主动抗扰能力；
+
+      - 2)机理明确：三个参数 :math:`{\omega _c}` ， :math:`{K_P}` 和 :math:`\alpha` 具有明确物理含义，且参数与控制性能建立了直接关联，调参机理明确、调参思路清晰；
+
+      - 3)通用性强：适用于不同类型对象，调参方法具有一致性；
+
+      - 4)等价性：可与各类经典PID调参方法建立等价性。例如， :math:`\alpha  = 1`  即为ZN-PID。
+
+步骤2：仿真
+~~~~~~~~~~~
+
+   通过上节系统辨识实验，获得的电机模型为：
+
+      .. math::
+
+         G(s) = \frac{{75910}}{{{s^2} + 858.4s + 9780}}
+
+   式中系统极点：s1=-11.5(主导), s2=-846.8。
+
+   在Simulink中搭建仿真程序如下图所示：
+
+   .. figure:: anlimedia/image53.png
+      :align: center
+      :scale: 70 %
+
+**直流电机调速仿真实验**
+
+   **方案1：PID控制**
+
+      直流电机为快系统，闭环响应可以很快，因此 :math:`{\omega _c}` 可取大，取 :math:`{\omega _c} = 20` ；取 :math:`\alpha  = 1` ，仿真中 :math:`{K_P}` 逐渐增大0.1、0.2、0.3。仿真结果如下图所示：
+
+      .. figure:: anlimedia/image58.png
+         :align: center
+         :scale: 35 %
+
+      .. figure:: anlimedia/image59.png
+         :align: center
+         :scale: 35 %
+
+   **方案2：PI控制**
+
+      取 :math:`{\omega _c} = 20` ；取 :math:`\alpha  = 0` 为PI，仿真中 :math:`{K_P}` 逐渐增大0.1、0.2、0.3。仿真结果如下图所示：
+
+      .. figure:: anlimedia/image61.png
+         :align: center
+         :scale: 35 %
+
+      .. figure:: anlimedia/image62.png
+         :align: center
+         :scale: 35 %
+
+
+      综合以上两种方案，可以得到下表所示结论：
+
+============ ================== ============
+**速度环**   **方案1 PID**      **方案2 PI**
+============ ================== ============
+跟踪         超调小，           超调小，                             
+  \          相对慢             快
+抗扰         慢                 快
+wo(抗扰原理) 大                 小
+控制量       微分影响           无微分影响
+存在问题     噪声敏感，带宽受限 
+**结论**     **代价大**         **代价小**
+============ ================== ============
+
+步骤3：实验测试
+~~~~~~~~~~~~~~~
+
+   在Simulink搭建实验模型及各模块参数设置如下图所示，其中在第5秒时刻添加0.1的恒值扰动，控制系统运行时间为10s，控制步长为0.001s(区别于上一节的0.002s，这里没有很大的运算量，因而控制周期可设为最小允许值0.001s)。
+
+   .. figure:: anlimedia/image63.png
+      :align: center
+      :scale: 35 %
+
+**直流电机调速控制实验模块连接及设置**
+
+   点击编译，一键部署生成的代码，复位STM32开发板，点击连接、运行，打开示波器查看实时控制曲线，如下图所示（这里展示的是未封装的slx模型）。每次运行完保存数据，以备后续分析。
+
+   .. note:: Sukung运行数据两种保存方式见（\ **超链接到程前哥所写**\ ）。
+
+      .. figure:: anlimedia/image64.png
+         :align: center
+         :scale: 35 %
+
+   **方案1：PID控制**
+
+      取 :math:`{\omega _c} = 20` ， :math:`\alpha  = 1` ，实验中 :math:`{K_P}` 逐渐增大，取0.1、 0.2、0.3。绘图如下：
+
+      .. figure:: anlimedia/image66.png
+         :align: center
+         :scale: 35 %
+
+
+   **方案2：PI控制**
+
+      取 :math:`{\omega _c} = 20` ， :math:`\alpha  = 0` ，，此时控制器为PI，实验中 :math:`{K_P}` 逐渐增大0.1， 0.2，0.3。绘图如下：
+
+      .. figure:: anlimedia/image69.png
+         :align: center
+         :scale: 35 %
+
+
+   **方案3：带前置滤波器PID/PI控制**
+
+      添加一阶前置滤波器如下图所示：
+
+      .. figure:: anlimedia/image70.png
+         :align: center
+         :scale: 35 %
+
+**带前置滤波器直流电机抗扰PID调速实验**
+
+   取 :math:`{\omega _c} = 20` ， :math:`{K_P} = 0.3` ， :math:`\alpha  = 0.1` 。绘图如下：
+
+   .. figure:: anlimedia/image73.png
+      :align: center
+      :scale: 35 %
+
+
+小结
+~~~~
+
+   本实验搭建了直流电机调速系统，并通过Sukung实现了Simulink下的仿真与实验的相互验证，并使用抗扰PID控制器，达到了良好的控制效果。此外，用户还可以尝试在线修改期望速度以及控制器参数。

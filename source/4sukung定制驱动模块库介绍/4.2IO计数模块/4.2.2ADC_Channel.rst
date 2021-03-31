@@ -1,0 +1,24 @@
+
+4.2.2 ADC_Channel
+~~~~~~~~~~~~~~~~~
+
+   ADC，全称Analog-to-Digital Converter，模/数转换模块，可以实现连续模拟信号到离散数字信号的转换。用户可以采集指定IO引脚上的模拟电压(0-3.3v)，以数字量的形式输出(0-4095)。
+
+      • 该模块调用的是STM32F103ZET6 的外设资源ADC1；
+      • 可以多个ADC 同时使用，采集不同信号源；
+      • 12位逐次逼近型的模拟数字转换器；
+      • ADC工作在连续模式，可多次采样取平均；
+      • INx：设置ADC 采样通道，可选择外设ADC1 的全部通道；
+      • ADC_SAMPLETIME_xCYCLES_5(1-239)：为设置ADC 采样周期，x 最小可设置为1，即1.5 个采样周期；最大设置为239，即239.5 个采样周期——采样周期越短，ADC 采集数据越快，最快约为1.17 微秒；
+      • Average_xNum：可选在一个控制周期内的采样次数，并取采样均值输出。0为单次采样并输出，建议均值滤波个数<=8；
+      • Sample Time：设置为与系统控制周期一致。
+
+   .. image:: media/image70.png
+      :align: center
+      :scale: 70 %
+      
+   .. image:: media/ADC_Table.jpg
+      :align: center
+      :scale: 50 %
+
+.. note::ADC在STM32单片机上的工作原理，推荐参考\ `博客 <https://yngzmiao.blog.csdn.net/article/details/80071349>`__\ 。

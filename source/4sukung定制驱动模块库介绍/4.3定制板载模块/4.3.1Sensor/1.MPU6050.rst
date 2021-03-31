@@ -1,0 +1,40 @@
+(1) MPU6050模块
+----------------------
+
+   通过此MPU6050模块可以获得被控对象的3 轴加速度计输出、3轴陀螺仪输出和温度输出。
+   
+   MPU6050 是一种6轴空间运动传感器芯片，集成了3轴MEMS陀螺仪和3轴MEMS加速度计，以及一个可扩展的数字运动处理器DMP，可用I2C接口与目标机通讯，其它原理介绍参考博客。通过相关姿态解算与融合可以得到被控对象的姿态信息。关于姿态解算与融合，推荐参考全权编写的《\ `多旋翼飞行器设计与控制 <https://rflysim.com/zh/5_Course/Content.html>`__\ 》。
+   
+   为了使用此模块，用户需要对其进行参数配置。而考虑资源使用问题，设计使能数据获取通道：
+      
+      • ``Is Use Accel XY``：使能加速度计X轴和Y轴的数据通道；
+      • ``Is Use Accel Z``：使能加速度计Z轴的数据通道；
+      • ``Is Use Gryo XY``：使能陀螺仪X轴和Y轴的数据通道；
+      • ``Is Use Gryo Z``：使能陀螺仪Z轴的数据通道；
+      • ``Is Use Temp``：使能温度测量通道；
+      • ``Sample Time``：采样时间.
+
+   .. image:: Block_Media/image13.png
+      :align: center
+      :scale: 100 %
+
+   如上图的MPU6050模块，对应加速度计和、陀螺仪和温度传感器的输出。在定制模块时，已对MPU6050的属性进行了设置。
+
+      .. code-block:: C++
+
+         MPU6050(I2C_TypeDef* I2Cx = I2C1, uint8 ownAddress = 0xD0, /*使用I2C1*/
+         MPU6050_GyroScaleTypeDef gyroScale = MPU6050_GYRO_SCALE_250DPS, /*陀螺仪的满量程范围为±250DPS*/
+         MPU6050_AcceScaleTypeDef acceScale = MPU6050_ACCE_SCALE_2G); /*加速度传感器的满量程范围为±2G*/
+
+
+   进行相关初始化，相关参数信息查看I2C
+
+      .. code-block:: C++
+
+         I2C_InitInfoTypeDef initInfo; /*采用I2C1与目标机通信，并对I2C初始化*/            
+         initInfo.Mode = I2C_MODE_STANDARD_MODE;
+         initInfo.FastModeDutyCycle = I2C_FAST_MODE_DUTY_CYCLE_2_1;
+         initInfo.SCLRiseTime = 1000;
+         initInfo.isEnableClockStretching = true;
+         initInfo.isNeedI2C1PinRemap = true;
+         I2C_Init(I2Cx, &initInfo);

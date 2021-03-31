@@ -1,0 +1,15 @@
+步骤3：MATLAB MEX编译器安装
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   .. figure:: Setup_Media/image68.png
+      :align: center
+      :scale: 80 %
+
+   在MATLAB命令行窗口执行命令 ``mex -setup``:
+
+   -  1. 如果执行完毕，输出结果出现上图所示的错误信息，则参考\ `博客 <https://blog.csdn.net/youyingbo/article/details/88311537>`__\ ，进行MinGW-w64 C/C++ 编译器安装，我们提供MinGW安装文件，可以前往\ `github <https://github.com/yezhuyun/mingw-w64>`__\ 下载。
+   -  2. 如果出现下图所示输出，则按照输出提示点击 ``mex -setup C++`` ，完成编译器选择和安装。
+
+   .. figure:: Setup_Media/image7.png
+      :align: center
+      :scale: 80 %

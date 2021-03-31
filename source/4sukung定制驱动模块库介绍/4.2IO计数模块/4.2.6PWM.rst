@@ -1,0 +1,102 @@
+
+
+4.2.6 PWM 
+~~~~~~~~~
+
+    ``PWM`` 模块包括三个子模块： ``PWM Generators`` 模块、 ``BTS7960`` 模块和 ``TB6612FNG``，都可以产生设定频率和占空比的PWM信号，模块的输入信号为占空比。三个子模块适用于不同的电机驱动模块，用户可根据自己的硬件情况进行选择。
+
+   -  (1) **PWM Generators 模块**
+
+      ``PWM Generators`` 模块采用 ``L298N`` 的电机驱动逻辑，通过双路PWM控制电机的正反转，因此单个模块可以控制两个电机。
+
+      模块的输入端 ``L`` 和 ``R`` 分别控制两个电机， ``TIM`` 的PWM通道 ``ccr1`` 和 ``ccr2`` 根据输入端 ``L`` 的正负值，来决定导通通道，值的大小决定PWM的占空比，从而控制电机的正反转以及转速， ``R`` 端也是如此。具体的分析可以参考驱动代码，和L298N的相关资料。
+
+      .. code-block:: C++
+
+         uint32 ccr1, ccr2, ccr3, ccr4;
+
+         if(speedLeft >= 0)
+         {
+            ccr1 = (uint16)speedLeft; cr2 = 0;
+         }
+         else
+         {
+            ccr1 = 0; ccr2 = (uint16)(-speedLeft);
+         }
+         if(speedRight >= 0)
+         {
+            ccr3 = (uint16)speedRight; ccr4 = 0;
+         }
+         else
+         {
+            ccr3 = 0; ccr4 = (uint16)(-speedRight);
+         }
+         TIM_PWM_SetPWM(TIMx, TIM_PWM_CHANNEL_MASK, ccr1, ccr2, ccr3, ccr4);
+
+      而要实现功能，则需要对以下参数进行配置。
+
+         • ``PWM Generator Index``：设置选用对应的TIM，可选序号见TIM引脚映射图；
+         • ``PWM Frequency``：PWM 信号频率，可根据所使用的电机驱动进行设置；
+         • ``PWM Pin Remap``：引脚重映射索引，参考TIM引脚映射图；
+         • ``Sample Time``：采样时间，推荐与系统步长一致。
+
+      .. image:: Block_Media/image8.png
+         :align: center
+         :scale: 100 %
+
+      .. image:: Block_Media/image9.png
+         :align: center
+         :scale: 50 %
+
+   -  (2) **BTS7960模块**
+
+      ``BTS7960`` 模块专门为BTS7960驱动所定制。相对于L298N驱动增加了PWM使能引脚设置，通过对使能引脚的高低电平控制，改变驱动通道的通断，即控制电机启停。而通过 ``TIM`` 的PWM两通道的占空比差值设计，实现电机速度的改变。具体可参考下文所示驱动代码，以及BTS7960的相关资料。
+
+      .. code-block:: C++
+
+         if(speed_left == 0) GPIO_WritePin(GPIOxLeft,GPIO_Pin_Left,RESET);
+         else GPIO_WritePin(GPIOxLeft,GPIO_Pin_Left,SET);
+
+         if(speed_left > 0) ccr1 = limit, ccr2 = limit - speed_left;
+         else ccr2 = limit, ccr1 = limit + speed_left;
+
+         if(enableSecond == 1)
+         {
+            if(speed_right == 0) GPIO_WritePin(GPIOxRight,GPIO_Pin_Right,RESET);
+            else GPIO_WritePin(GPIOxRight,GPIO_Pin_Right,SET);
+
+            if(speed_right > 0) ccr3 = limit, ccr4 = limit - speed_right;
+            else ccr4 = limit, ccr3 = limit + speed_right;
+         }
+
+      为了使用 ``BTS7960`` 模块，用户需要对模块进行正确配置，接下来介绍此模块的参数配置：
+         
+         • ``BTS7960 Tim Index``：设置选用对应的TIM,可选序号见TIM引脚映射图;
+         • ``BTS7960 Frequency``：PWM 信号频率，可根据需要选取；
+         • ``Tim Pin Remap``：TIM引脚重映射索引；
+         • ``Enable Second Channel``：使能驱动的第二个通道，即是否使用 ``R`` 输入，若不使用则填入 ``0`` ，则不对 ``R`` 使能引脚进行初始化以及使用，节约引脚资源；
+         • ``BTS7960 Left Enable Port``：驱动模块 ``L`` 端的使能端口设置；
+         • ``BTS7960 Left Enable Pin``：驱动模块 ``L`` 端的使能引脚设置；
+         • ``BTS7960 Right Enable Port``：驱动模块 ``R`` 端的使能端口设置；
+         • ``BTS7960 Right Enable Pin``：驱动模块 ``R`` 端的使能引脚设置；
+         • ``Sample Time``：采样时间，推荐与系统步长一致。
+
+      .. image:: Block_Media/image10.png
+         :align: center
+         :scale: 80 %
+
+   -  (3) **TB6612FNG模块**
+
+       ``TB6612FNG`` 模块是专门为TB6612FNG驱动所定制。此驱动相较于上述两种驱动，其可以驱动四个电机。对于TIM的四路PWM通道(ccr1,ccr2,ccr3,ccr4)对应四个电机，单个通道的占空比由模块输入量的绝对值决定，而电机的正反转由模块配置的两个引脚的高低电平变化决定。具体分析可参考TB6612FNG的相关资料。接下来对模块参数的配置进行介绍：
+
+         • ``TB6612FNG Tim Index``：设置选用对应的TIM,可选序号见TIM引脚映射图;
+         • ``TB6612FNG Frequency``：PWM 信号频率，可根据需要选取；
+         • ``Tim Pin Remap``：TIM引脚重映射索引；
+         • ``TB6612FNG Number``：使能驱动的通道数量，若填入 ``2`` ，则只使用 ``ccr1`` 和 ``ccr2`` ，不对剩下的通道所需的正反转使能引脚(Second A1N1和A1N2，B1N1和B1N2)进行初始化和使用，节省引脚资源。(剩下的参数不再介绍，同上)
+
+      .. image:: Block_Media/image11.png
+         :align: center
+         :scale: 100 %
+
+.. note:: 关于利用STM32产生PWM信号，推荐参考\ `博客 <https://blog.csdn.net/qq_36958104/article/details/83661117>`__\ 。
+.. note::  ``PWM`` 模块只使用了TIM1 和TIM8 的4 个通道，对于其它的3 个PWM 互补通道，暂未使用，后续版本补充。

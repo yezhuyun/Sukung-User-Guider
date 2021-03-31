@@ -1,0 +1,14 @@
+
+4.2.3 ADC_Ex 
+~~~~~~~~~~~~
+
+   ADC_Ex是ADC_Channel模块的升级版，可以完成短时、高精度的要求。STM32F103ZET6的外设ADC1 和ADC2 具有相同的通道, 采用ADC1 和ADC2 共同采样,并取平均值输出, 达到提升精度的目的。
+
+      • ``INx`` ：通道选择项, 同ADC_Channel模块；
+      • ``ADC_SAMPLETIME_xCYCLES_5(1-239)`` ：同ADC_Channel模块，推荐设置为13；
+      • ``ADC Series Number`` ：所使用全部ADC_Ex模块都需要编号, 从0开始编号，0、1、2、3…、15，编号不能重复；
+      • ``Sample Time`` ：设置为与系统控制周期一致。
+
+   .. image:: media/ADC_Ex.jpg
+      :align: center
+      :scale: 35 %

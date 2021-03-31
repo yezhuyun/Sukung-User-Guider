@@ -1,0 +1,65 @@
+
+(2) GY271模块
+------------------
+
+   此模块为电子罗盘模块，可以获得被控对象的偏航角数据。关于GY271在STM32的使用，推荐\ `博客 <http://www.51hei.com/bbs/dpj-80996-1.html>`__\ 。
+
+   此模块固定了传感器以及I2C协议的配置，只提供对采样时间的配置，如若想自行设定相关配置，推荐使用通用模块I2C自行构建。
+
+   .. image:: Block_Media/image14.png
+      :align: center
+      :scale: 80 %
+
+   我们已对模块进行了相关配置，以期获得良好的传感效果。我们设置GY271采用I2C1与目标机通信，并对I2C进行相关初始化，相关参数信息查看I2C.
+
+      .. code-block:: C++
+
+         I2C_InitInfoTypeDef initInfo;
+         initInfo.Mode = I2C_MODE_STANDARD_MODE;
+         initInfo.FastModeDutyCycle = I2C_FAST_MODE_DUTY_CYCLE_2_1;
+         initInfo.SCLRiseTime = 1000;
+         initInfo.isEnableClockStretching = true;
+         initInfo.isNeedI2C1PinRemap = true;
+         I2C_Init(I2C1, &initInfo);
+
+   GY271初始化设置:
+
+      .. code-block:: C++
+
+         I2C_WriteRegisterByte(I2C1, 0x3C, 0x00, 0x70);/*8 位的采样平均，15Hz的标准数据输出频率*/
+         I2C_WriteRegisterByte(I2C1, 0x3C, 0x02, 0x00);/*连续测量模式*/
+
+   数据获取:
+
+      .. code-block:: C++
+
+         I2C_WriteByte(I2C1, 0x3C, 0x03); /*数据获取*/
+         I2C_ReadBytes(I2C1, 0x3D, GY271_BUF, 6);
+   
+   数据处理与融合:
+
+      .. code-block:: C++
+
+         GY271_Read_Multiple(GY271_BUF);
+         gy271.MagX=GY271_BUF[0] << 8 | GY271_BUF[1]; /*Combine MSB and LSB of X Data output register*/
+         gy271.MagZ=GY271_BUF[2] << 8 | GY271_BUF[3]; /*Combine MSB and LSB of Z Data output register*/
+         gy271.MagY=GY271_BUF[4] << 8 | GY271_BUF[5]; /*Combine MSB and LSB of Y Data output register*/
+         
+         if(gy271.MagX>32767)
+         {
+            gy271.MagX-= 65536;
+         }
+            
+         if(gy271.MagY>32767)
+         {
+            gy271.MagY-= 65536;
+         }
+         
+         if(gy271.MagZ>32767)
+         {
+            gy271.MagZ-= 65536;
+         }
+            
+         GY271_Angle= atan2((double)gy271.MagY,(double)gy271.MagX)*(180/3.14159265);/*计算角度*/
+   
+   对读取的数据进行拼接，并利用X 轴和Y 轴数据融合获取Yaw数据，单位弧度。
