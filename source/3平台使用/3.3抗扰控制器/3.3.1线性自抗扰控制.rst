@@ -3,13 +3,13 @@
 3.3.1 线性自抗扰控制
 ~~~~~~~~~~~~~~~~~~~~
 
-   线性自抗扰控制(Active disturbance rejection control, ADRC)，是一类经典的主动抗扰控制方法[1]（- [1] Gao Z. Scaling and Parameterization Based Controller Tuning[C]// American Control Conference. IEEE, 2003:4989-4996.）。在串联积分标准型与总扰动的系统描述下，控制器的设计简化为扩张状态观测器的带宽设计和反馈控制器带宽设计，以及增益参数设计。详细资料及介绍见\ `B站 <https://space.bilibili.com/408884199/>`__\ 和自抗扰控制QQ群(128464029(入门)，914841616(学术)。
+   线性自抗扰控制(Active disturbance rejection control, ADRC)，是一类经典的主动抗扰控制方法[1]。在串联积分标准型与总扰动的系统描述下，控制器的设计简化为扩张状态观测器的带宽设计和反馈控制器带宽设计，以及增益参数设计。详细资料及介绍见\ `B站 <https://space.bilibili.com/408884199/>`__\ 和自抗扰控制QQ群(128464029(入门)，914841616(学术)。
 
    .. image:: media/image44.jpg
       :align: center
       :scale: 35 %
 
-  
+  ----------------------------------------
    针对典型二阶对象，自抗扰控制器表示为：
 
       .. math::
@@ -46,4 +46,8 @@
          \end{array}} \right]z,
          \end{array} \right.
 
-   以LADRC为基准控制器，`文献 <https://xueshu.baidu.com/usercenter/paper/show?paperid=1k7r0gp0cy5002r07k3r0vg03w394442&site=xueshu_se>`_ 设计了和的“定量自适应”调节，能在有限ESO带宽下提升抗扰性能，简便易用。
+   以LADRC为基准控制器，文献[2]设计了和的“定量自适应”调节，能在有限ESO带宽下提升抗扰性能，简便易用。
+
+
+- `[1] <https://xueshu.baidu.com/usercenter/paper/show?paperid=e5afd915e438b15da38c0f9112e6fe0b&site=xueshu_se>`_  Gao Z. Scaling and Parameterization Based Controller Tuning[C]// American Control Conference. IEEE, 2003:4989-4996.
+- `[2] <https://xueshu.baidu.com/usercenter/paper/show?paperid=1k7r0gp0cy5002r07k3r0vg03w394442&site=xueshu_se>`_  Nie Zhuoyun, Zhang Bing, Wang Qing-Guo, Liu Rui-Juan, Luo Ji-Liang. Adaptive active disturbance rejection control guaranteeing uniformly ultimate boundedness and simplicity. International Journal of Robust and Nonlinear Control, 2020, 30(17): 7278-7294.

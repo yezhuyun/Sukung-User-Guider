@@ -3,7 +3,7 @@
 3.3.2 抗扰PID控制器
 ~~~~~~~~~~~~~~~~~~~
 
-   抗扰PID控制(Disturbance Rejection Proportional-Integral-Derivative control, DR-PID)，是一种基于自抗扰控制原理设计的先进PID控制方法\ `，见文献 <https://zhuanlan.zhihu.com/p/215290384#ref_1>`__\ 。抗扰PID控制器采用了经典PID形式和自抗扰控制设计方法，参数调节简单、适用范围广、鲁棒性强，其调节方法与PID工程调参经验兼容。反馈控制结构如下图所示。
+   抗扰PID控制(Disturbance Rejection Proportional-Integral-Derivative control, DR-PID)，是一种基于自抗扰控制原理设计的先进PID控制方法，见文献[3,4]。抗扰PID控制器采用了经典PID形式和自抗扰控制设计方法，参数调节简单、适用范围广、鲁棒性强，其调节方法与PID工程调参经验兼容。反馈控制结构如下图所示。
 
    .. image:: media/image50.jpg
       :align: center
@@ -28,4 +28,9 @@
       -  调参顺序为，先设定 :math:`\omega _c` 即闭环目标，然后调节 :math:`K_P` 和 :math:`\alpha` ，即实现目标的手段。
       -  如果系统存在超调，可在输入端加入滤波器 :math:`{F_r}(s)` 。
       -  DR-PID适用于机电系统、一阶时滞系统、积分型(液位)系统、最小/非最小相位系统等各类常见工业对象。PID控制器的抗扰原理及相关技术资料详见\ `博客 <https://zhuanlan.zhihu.com/p/215290384>`__\ 。
-      -  在DR-PID下，各个参数物理含义与控制性能建立起了直接关联，因此有望在DR-PID下建立“白箱”自适应调节与在线优化，同时实现与上层MPC的高效对接，为工业系统APC提供一种实现途径。
+      -  在DR-PID下，各个参数物理含义与控制性能建立起了直接关联，有望在DR-PID下建立“白箱”自适应调节与在线优化，同时实现与上层MPC的高效对接，为工业系统APC提供一种实现途径。
+
+
+- `[3] <https://xueshu.baidu.com/usercenter/paper/show?paperid=1w1h06y06r6j0xs0vp3304h0hw216615&site=xueshu_se>`_   Nie Zhuoyun, Zhu Chao, Wang Qingguo, Gao Zhiqiang, Shao Hui, Luo Jiliang. Design, analysis and application of a new disturbance rejection PID for uncertain systems. ISA Transactions, 2020, 101: 281-294.
+
+- `[4] <http://www.cnki.com.cn/Article/CJFDTotal-KZLY20210107005.htm>`_  李高铭，聂卓赟，李兆洋，郑义民，罗继亮. 非平衡负载下轮式移动机器人的抗扰PID控制. 控制理论与应用. 2021.

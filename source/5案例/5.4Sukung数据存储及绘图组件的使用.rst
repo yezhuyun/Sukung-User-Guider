@@ -11,11 +11,10 @@
    外部模式及“To
    Workspace”和“Scope”参数配置如下图所示，其中数据格式均为``Array``。
 
-      .. figure:: anlimedia/image74.png
+      .. figure:: anlimedia/image74.jpg
          :align: center
          :scale: 35 %
 
-         **外部模式及“To Workspace”和“Scope”参数配置**
 
    编译下载运行后所得数据如下图所示：
 
@@ -23,7 +22,6 @@
          :align: center
          :scale: 35 %
 
-         **实验数据及数据预处理**
 
    打包工作区变量，另存为testdate.mat。
 
@@ -37,7 +35,6 @@
          :align: center
          :scale: 35 %
 
-         **Sukung绘图组app安装图示**
 
 步骤3：使用Sukung绘图组件绘制曲线
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +52,7 @@
          :align: center
          :scale: 35 %
 
-         **四种绘图展示**
+
 
 小结
 ~~~~

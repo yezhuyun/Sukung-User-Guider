@@ -1,7 +1,11 @@
 .. _软件下载:
 
 6.1 软件下载
-------------
+------------------------------------
 
     当前软件版本：Sukung V1.0，有线下载，有线数据传输。
+
+    软件下载：`github <https://github.com/yezhuyun/Sukung-Setup>`_ 
+
+    淘宝网址： `淘宝网址 <https://item.taobao.com/item.htm?id=641308134185>`_ 
 

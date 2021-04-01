@@ -3,7 +3,7 @@
 2.2软件平台
 -----------
 
-   Sukung系统所需的支撑软件如图9所示，包括：MATLAB/Simulink, Keil V5 和Sukung软件包。
+   Sukung系统所需的支撑软件如下图所示，包括：MATLAB/Simulink, Keil V5 和Sukung软件包。
 
    .. image:: media/image13.jpg
       :align: center
@@ -33,4 +33,4 @@
 
    Sukung是由华侨大学先进控制实验室研发的嵌入式实时半实物仿真平台，其核心是一套面向MATLAB/Simulink和嵌入式目标机STM32F103ZET6的高性能接口。能够将嵌入式目标机与MATLAB/Simulink进行无缝连接。
 
-   Sukung软件的获取：`GITHUB <https://github.com/yezhuyun/Sukung-Setup>`_ 。
+   Sukung软件的获取： :ref:`软件下载` 。

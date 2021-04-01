@@ -1,45 +1,12 @@
 
-4.4.1 一阶LADRC模块
-~~~~~~~~~~~~~~~~~~~~~~~~
+4.4.1 一阶、二阶LADRC模块
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ``1-Order LADRC`` 模块是针对典型一阶被控对象所设计的线性自抗扰控制器，控制器表示为
+    以二阶LADRC为例，介绍此模块使用方式：
 
-        .. math::
+    ``2-Order LADRC`` 模块是针对典型二阶对象所设计的线性自抗扰控制器（ ``1-order LADRC`` 模块类似，在此不再赘述），请参考 :ref:`线性自抗扰控制` 。
 
-            {u{\rm{ = }}\frac{{Kr + Fz}}{{{b_0}}}}
-            
-    其中，
-
-        .. math::
-
-            \left\{ \begin{array}{l}
-            K = {F_1} = {\omega _c}\\
-            F =  - \left[ {\begin{array}{*{20}{c}}
-            {{F_1}}&{{F_0}}
-            \end{array}} \right] =  - \left[ {\begin{array}{*{20}{c}}
-            {{\omega _c}}&1
-            \end{array}} \right]
-            \end{array} \right.
-        
-        .. math::
-
-            ESO:\left\{ \begin{array}{l}
-            \dot z = \left[ {\begin{array}{*{20}{c}}
-            0&1\\
-            0&0
-            \end{array}} \right]z + \left[ {\begin{array}{*{20}{c}}
-            {{b_0}}\\
-            0
-            \end{array}} \right]u + \left[ {\begin{array}{*{20}{c}}
-            {2{\omega _0}}\\
-            {\omega _0^2}
-            \end{array}} \right]\left( {y - {y_z}} \right)\\
-            {y_z} = \left[ {\begin{array}{*{20}{c}}
-            1&0
-            \end{array}} \right]z
-            \end{array} \right.
-
-    详细内容请自行查看相关ADRC资料，推荐\ `B站 <https://space.bilibili.com/408884199/>`__\ 和自抗扰控制QQ群(128464029(入门)，模块通过参考输入 ``r`` 和 被控对象输出 ``yp`` 产生控制量 ``u`` 以及扩张观测器的观测状态 ``xo1`` 和 ``xo2``。使用模块(控制方法)需要对模块参数进行配置:
+    详细内容请自行查看相关ADRC资料，推荐\ `B站 <https://space.bilibili.com/408884199/>`__\ 和自抗扰控制QQ群(128464029(入门)，模块通过参考输入 ``r`` 和 被控对象输出 ``yp`` 产生控制量 ``u`` 以及扩张观测器的观测状态 ``xo1`` 、 ``xo2`` 和  ``xo3``。使用模块(控制方法)需要对模块参数进行配置:
 
         - ``ESO Bandwidth wo``：扩张状态观测器的带宽参数 :math:`{{\omega _0}}` ，其决定了ESO的跟踪速度，此值越大，ESO估计扰动越快，但过大可能导致噪声难以忍受或ESO振荡；
         - ``Conreoller Bandwidth wc``：控制器带宽 :math:`{{\omega _c}}` ，其决定了控制器的响应速度，一定范围内越大控制效果越好，但过大可能使系统不稳定，需要根据瞬态响应进行调节；
@@ -49,12 +16,10 @@
         :align: center
         :scale: 100%
 
-4.4.2 二阶LADRC模块
-~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ``2-Order LADRC`` 模块是针对典型二阶对象所设计的线性自抗扰控制器，其与 ``1-order LADRC`` 模块类似，在此不再赘述，请参考 :ref:`线性自抗扰控制` 。
 
-4.4.3 二阶Adaptive ADRC模块
+
+4.4.2 二阶Adaptive ADRC模块
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     ``2-Order Adaptive ADRC`` 模块是在二阶线性自抗扰控制器基础上增加“定量自适应”调节机制，有兴趣可以查看 `文献 <https://xueshu.baidu.com/usercenter/paper/show?paperid=1k7r0gp0cy5002r07k3r0vg03w394442&site=xueshu_se>`_  。在此对其使用进行说明
@@ -73,32 +38,9 @@
         :align: center
         :scale: 100%
 
-4.4.4 四阶TD模块
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    ``4-Order TD`` 模块是4阶的线性跟踪微分器，可以实现对期望信号的快速跟踪，并且能够提取期望信号的各阶微分信号，具体内容参考 `专栏 <https://zhuanlan.zhihu.com/p/76326861>`_ 。
 
-    设期望输入为 :math:`{r^*}`，则其TD输出为，
-
-        .. math::
-
-            r = {\left( {\frac{{{\omega _t}}}{{s + {\omega _t}}}} \right)^4}{r^*}
-
-    那么展开可得，
-
-        .. math::
-
-            {r^{\left( 4 \right)}} =  - 4{\omega _t}{r^{\left( 3 \right)}} - 6\omega _t^2\ddot r - 4\omega _t^3\dot r - \omega _t^4\left( {r - {r^*}} \right)
-
-    因此可得到期望输入的各阶微分，需要配置参数：
-    
-        - ``TD Bandwidth wt``：跟踪微分器的带宽参数 :math:`{\omega _t}`，表示跟踪的快速性。
-    
-    .. figure:: Controller_Media/TD.PNG
-        :align: center
-        :scale: 100%
-
-4.4.5 DR-PID 模块
+4.4.3 DR-PID 模块
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     根据 :ref:`DRPID` ，封装了 ``DR-PID`` 模块，对应的参数配置可参考此章节，在此不再赘述。
