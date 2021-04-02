@@ -20,12 +20,12 @@
          :align: center
          :scale: 55 %
 
-      **解决方法** ：可直接从其它PC或者<链接>获取缺失文件，粘贴到对应文件夹内，一般位于 ``C:\Windows\System32`` 。
+      **解决方法** ：可直接从其它PC或者 `github <https://github.com/yezhuyun/Sukung-Setup/tree/master/dll>`_  获取缺失文件，粘贴到对应文件夹内，一般位于 ``C:\Windows\System32`` 。
 
 6.2.2 下载与连接
 ~~~~~~~~~~~~~~~~
 
-   此Sukung版本使用的是基于ISP的软件下载方式，相关注意事项，已在<链接>中给出。在此做出对与目标机连接时相关问题的补充，并给出相关分析。
+   此Sukung版本使用的是基于ISP的软件下载方式，相关注意事项，已在 :ref:`LED灯` 中给出。在此做出对与目标机连接时相关问题的补充，并给出相关分析。
 
    -  **问题2：** 点击 ``Connect To Target`` 实现连接目标机操作时，立即弹出如下图错误信息：``Error occurred while executing External Mode MEX-file `ext_sukung_serial_comm`…`` 。
 
@@ -86,7 +86,7 @@
 
    在模块使用当中，由于硬件或者引脚冲突，导致部分模块在处于某种模式时无法使用，在此对部分模块说明。
 
-   -  **Pulse_Counters模块与PWM模块** ：具体使用参照<链接>。由于两模块使用的都是STM32单片机(目标机)的TIM资源，因而在进行运动控制使用多个电机时，容易出现引脚冲突问题，在此给出使用有效结果以及多电机策略。
+   -  **Pulse_Counters模块与PWM模块** ：具体使用参照定制模块等相关章节。由于两模块使用的都是STM32单片机(目标机)的TIM资源，因而在进行运动控制使用多个电机时，容易出现引脚冲突问题，在此给出使用有效结果以及多电机策略。
 
       .. image:: media/image265.png
          :align: center
