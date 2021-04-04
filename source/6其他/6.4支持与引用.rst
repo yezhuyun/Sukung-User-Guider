@@ -1,13 +1,11 @@
-6.4 支持与引用
+6.4 支持
 --------------
 
    -  定制与合作请联系： yezhuyun@sukung.cn;
 
    -  技术问题可入群交流：
    -  
-      群名称：Sukung半实物仿真技术交流群；
-
-      QQ群：661419695；
+      Sukung半实物仿真技术交流，QQ群：661419695；
 
          .. image:: media/image268.png
             :align: center
@@ -15,7 +13,7 @@
 
       
 
-   -  相关论文引用：
+   -  控制器模块相关论文：
 
       - [1] Gao Z. Scaling and Parameterization Based Controller Tuning[C]// American Control Conference. IEEE, 2003:4989-4996.
 
