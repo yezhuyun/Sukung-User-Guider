@@ -54,7 +54,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Sukung User Guide'
-copyright = '2021, Huaqiao AC Lab. Organized by Zhu Enze, Version-20210329'
+copyright = '2021, Huaqiao AC Lab. Organized by Zhu Enze, Version-20210404'
 author = 'Huaqiao AC Lab'
 
 # github_doc_root = 'https://github.com/rtfd/recommonmark/tree/master/docs/'
