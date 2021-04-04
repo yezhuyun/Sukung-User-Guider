@@ -46,7 +46,7 @@
          \end{array}} \right]z,
          \end{array} \right.
 
-   以LADRC为基准控制器，文献[2]设计了和的“定量自适应”调节，能在有限ESO带宽下提升抗扰性能，简便易用。
+   以LADRC为基准控制器，文献[2]设计了K和F的“定量自适应”调节，能在有限ESO带宽下提升抗扰性能。
 
 
 - `[1] <https://xueshu.baidu.com/usercenter/paper/show?paperid=e5afd915e438b15da38c0f9112e6fe0b&site=xueshu_se>`_  Gao Z. Scaling and Parameterization Based Controller Tuning[C]// American Control Conference. IEEE, 2003:4989-4996.
