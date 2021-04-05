@@ -29,7 +29,24 @@
       :align: center
       :scale: 35 %
 
+软件获取与咨询
+================
 
+   当前软件版本：Sukung V1.0，有线下载，有线数据传输。
+
+   -  软件下载：`github <https://github.com/yezhuyun/Sukung-Setup>`_ 
+
+   -  淘宝网址： `淘宝网址 <https://item.taobao.com/item.htm?id=641308134185>`_ 
+
+   -  定制与合作请联系： yezhuyun@sukung.cn;
+
+   -  技术问题可入群交流：
+   -  
+      Sukung半实物仿真技术交流，QQ群：661419695；
+
+         .. image:: media/image268.png
+            :align: center
+            :scale: 55 %
 
 .. toctree::
    :maxdepth: 1
