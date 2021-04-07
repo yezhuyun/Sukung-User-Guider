@@ -48,6 +48,8 @@
             :align: center
             :scale: 55 %
 
+   ** :ref:'快速开始' Sukung**
+
 .. toctree::
    :maxdepth: 1
    :caption: 目录:
