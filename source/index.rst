@@ -32,7 +32,7 @@
 软件获取与咨询
 ================
 
-   当前软件版本：Sukung V1.0，有线下载，有线数据传输。:ref:'快速开始' Sukung。
+   当前软件版本：Sukung V1.0，有线下载，有线数据传输。:ref:`快速开始` Sukung。
 
    -  软件下载：`github <https://github.com/yezhuyun/Sukung-Setup>`_ 
 
