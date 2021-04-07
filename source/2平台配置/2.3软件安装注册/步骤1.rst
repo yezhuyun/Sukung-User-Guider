@@ -2,7 +2,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    -  1. 安装MATLAB/Simulink(推荐2018b或以上版本）。安装路径示例：``C:\SoftwareProgram\MATLAB``;
-   -  2. 安装Keil V5。安装路径示例：``C:\SoftwareProgram\Keil``;
+   -  2. 安装Keil V5 (mdk 5.2.3)。安装路径示例：``C:\SoftwareProgram\Keil``;
    -  3. 安装Sukung软件：双击运行 ``Sukung.exe`` ，安装路径示例：``C:\SoftwareProgram\Sukung``。
 
 .. warning:: 上述软件的安装路径中不可包含空格、``.`` 等MATLAB所认为的文件或文件名的非法命名方式。例：``C:\Software Program\Sukung``。具体参照\ `博客 <https://www.cnblogs.com/yymn/p/4647276.html>`__\ 。
