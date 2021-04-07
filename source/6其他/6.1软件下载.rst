@@ -5,7 +5,9 @@
 
     当前软件版本：Sukung V1.0，有线下载，有线数据传输。
 
-    软件下载：`github <https://github.com/yezhuyun/Sukung-Setup>`_ 
+    Sukung软件下载：`github <https://github.com/yezhuyun/Sukung-Setup>`_ 
+
+    mingW-W64下载：\ `github <https://github.com/yezhuyun/mingw-w64>`__\ 
 
     淘宝网址： `淘宝网址 <https://item.taobao.com/item.htm?id=641308134185>`_ 
     
