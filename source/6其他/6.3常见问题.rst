@@ -6,21 +6,8 @@
 6.2.1 安装
 ~~~~~~~~~~
 
-   Sukung的安装以及环境配置，参照<安装流程>。在安装与配置说明中，已经提到相关错误以及其对应的解决方法。在此，对其进行补充。
+   Sukung的安装以及环境配置，参照<安装流程>。在安装与配置说明中，已经提到相关错误以及其对应的解决方法。大多是由于环境变量配置出错，以及keil的编译器版本引起的问题，因此用户安装时，需谨慎注意。
 
-   -  **问题1**：在安装Sukung时，或者在工程编译阶段，会在命令行窗口，或者在 ``diagnostics viewer`` 出现如下图错误，``缺少依赖共享库`` 或者直接提醒 ``mex64无效，找不到指定模块``。
-
-      .. image:: media/image258.png
-         :align: center
-         :scale: 55 %
-
-      或者，直接提醒缺失 ``ucrtbased.dll`` 和 ``vcruntime140d.dll`` 等 ``dll`` 文件。
-
-      .. image:: media/image259.png
-         :align: center
-         :scale: 55 %
-
-      **解决方法** ：可直接从其它PC或者 `github <https://github.com/yezhuyun/Sukung-Setup/tree/master/dll>`_  获取缺失文件，粘贴到对应文件夹内，一般位于 ``C:\Windows\System32`` 。
 
 6.2.2 下载与连接
 ~~~~~~~~~~~~~~~~
