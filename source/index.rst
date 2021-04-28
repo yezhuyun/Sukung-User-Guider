@@ -41,13 +41,18 @@
    -  定制与合作请联系： yezhuyun@sukung.cn;
 
    -  技术问题可入群交流：
-   -  
-      Sukung半实物仿真技术交流，QQ群：661419695；
+
+   -  Sukung半实物仿真技术交流，QQ群：661419695；
 
          .. image:: media/image268.png
             :align: center
             :scale: 55 %
-
+   -   欢迎关注微信公众号【Sukung】，相关信息将通过公众号进行推送。
+         
+         .. image:: media/Sukung公众号.jpg
+            :align: center
+            :scale: 55 %
+   
 .. toctree::
    :maxdepth: 1
    :caption: 目录:
