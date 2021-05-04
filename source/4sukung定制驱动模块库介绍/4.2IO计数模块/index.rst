@@ -15,6 +15,6 @@
    4.2.1DAC
    4.2.2ADC_Channel
    .. 4.2.3ADC_Ex
-   4.2.4GPIO/index
-   4.2.5TIMER
-   4.2.6PWM
+   4.2.3GPIO/index
+   4.2.4TIMER
+   4.2.5PWM
